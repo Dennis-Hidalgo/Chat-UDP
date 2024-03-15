@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ public class ServidorUDP {
     private static final int BUFFER_SIZE = 1024;
     private static List<InetAddress> direccionesConectadas = new ArrayList<>();
     private static List<Integer> puertosConectados = new ArrayList<>();
+    private static final String RUTA = System.getProperty("user.home") + "/Desktop/users/";
 
     public static void main(String[] args) {
         try {
@@ -43,6 +45,13 @@ public class ServidorUDP {
             // Informa al grupo de que el cliente ha entrado
             for (int i = 0; i < direccionesConectadas.size(); i++) {
                 enviarMensaje(socket, "¡" + nombreCliente + " ha entrado al chat!", direccionesConectadas.get(i), puertosConectados.get(i));
+            }
+
+            // Crear carpeta para el nuevo cliente
+            File carpetaCliente = new File(RUTA + nombreCliente);
+            if (!carpetaCliente.exists()) {
+                carpetaCliente.mkdir();
+                System.out.println("Carpeta creada para el cliente: " + nombreCliente);
             }
         } else {
             // Enviar el mensaje a todos los clientes conectados
